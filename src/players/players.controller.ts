@@ -11,12 +11,11 @@ export class PlayersController {
   @Post()
   async createPlayer(@Body() createPlayerDto: CreatePlayerDto) {
     const { email } = createPlayerDto;
-
-    await this.playersService.createPlayer(createPlayerDto);
+    const newPlayer = await this.playersService.createPlayer(createPlayerDto);
 
     return JSON.stringify({
       message: `Player ${email} successfully created!`,
-      player: createPlayerDto,
+      player: newPlayer,
     });
   }
 }
