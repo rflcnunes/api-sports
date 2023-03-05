@@ -13,4 +13,6 @@ async function bootstrap() {
   }
 }
 
-bootstrap();
+bootstrap().then(() =>
+  console.log(`Server is running on: ${process.env.NODE_PORT || 3000}`),
+);
