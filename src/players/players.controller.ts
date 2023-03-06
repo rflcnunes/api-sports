@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreatePlayerDto } from './dtos/create-player.dto';
 import { PlayersService } from './players.service';
 import { PlayerInterface } from './interfaces/player.interface';
@@ -18,6 +18,11 @@ export class PlayersController {
       message: `Player ${email} successfully created!`,
       player: newPlayer,
     });
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string): Promise<PlayerInterface> {
+    return this.playersService.findOne(id);
   }
 
   @Get()

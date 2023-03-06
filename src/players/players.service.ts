@@ -22,6 +22,10 @@ export class PlayersService {
     return player;
   }
 
+  async findOne(id: string): Promise<PlayerInterface> {
+    return this.playerModel.findOne({ _id: id }).exec();
+  }
+
   async getPlayers(): Promise<PlayerInterface[]> {
     return this.playerModel.find().exec();
   }
