@@ -8,10 +8,14 @@ export class Player {
   @Prop()
   name: string;
 
-  @Prop()
+  @Prop({
+    unique: true,
+  })
   email: string;
 
-  @Prop()
+  @Prop({
+    unique: true,
+  })
   phoneNumber: string;
 
   @Prop()

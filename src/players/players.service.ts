@@ -1,10 +1,17 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CreatePlayerDto } from './dtos/create-player.dto';
 import { PlayerInterface } from './interfaces/player.interface';
-import { v4 as uuid } from 'uuid';
+import { InjectModel } from '@nestjs/mongoose';
+import { Player, PlayerDocument } from './schemas/player.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class PlayersService {
+  constructor(
+    @InjectModel(Player.name)
+    private readonly playerModel: Model<PlayerDocument>,
+  ) {}
+
   private readonly logger = new Logger(PlayersService.name);
 
   async createPlayer(createPlayerDto: CreatePlayerDto) {
@@ -15,20 +22,16 @@ export class PlayersService {
     return player;
   }
 
-  private create(createPlayerDto: CreatePlayerDto): PlayerInterface {
-    const { name, email, phoneNumber } = createPlayerDto;
+  async getPlayers(): Promise<PlayerInterface[]> {
+    return this.playerModel.find().exec();
+  }
 
-    const player: PlayerInterface = {
-      _id: uuid(),
-      name,
-      email,
-      phoneNumber,
-      ranking: 'A',
-      position: 1,
-    };
+  private async create(
+    createUserDto: CreatePlayerDto,
+  ): Promise<PlayerInterface> {
+    const createdPlayer = await this.playerModel.create(createUserDto);
 
-    this.logger.log(`player: ${JSON.stringify(player)}`);
-
-    return player;
+    this.logger.log(`player: ${JSON.stringify(createdPlayer)}`);
+    return createdPlayer;
   }
 }
