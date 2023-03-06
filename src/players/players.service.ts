@@ -30,6 +30,16 @@ export class PlayersService {
     return this.playerModel.find().exec();
   }
 
+  async delete(id: string) {
+    const deletedPlayer = await this.playerModel
+      .findByIdAndRemove({ _id: id })
+      .exec();
+
+    this.logger.log(`deletedPlayer: ${JSON.stringify(deletedPlayer)}`);
+
+    return deletedPlayer;
+  }
+
   private async create(
     createUserDto: CreatePlayerDto,
   ): Promise<PlayerInterface> {
